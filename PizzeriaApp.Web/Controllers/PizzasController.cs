@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PizzeriaApp.Web.Data;
 using PizzeriaApp.Web.Models.Domain;
+using PizzeriaApp.Web.Models.DTO;
 
 namespace PizzeriaApp.Web.Controllers
 {
@@ -23,6 +25,46 @@ namespace PizzeriaApp.Web.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Pizzas.ToListAsync());
+        }
+
+        // GET: Pizzas/AddPizzaToCart/5
+        public async Task<IActionResult> AddPizzaToCartAsync(Guid? id)
+        {
+            var pizza = await _context.Pizzas.Where(z => z.Id.Equals(id)).FirstOrDefaultAsync();
+            AddPizzaToCartDto model = new AddPizzaToCartDto
+            {
+                SelectedPizza = pizza,
+                PizzaId = pizza.Id,
+                Quantity = 1
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddPizzaToCart([Bind("PizzaId, Quantity")]AddPizzaToCartDto item)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userCart = await _context.Carts.Where(z => z.OwnerId.Equals(userId)).FirstOrDefaultAsync();
+            if (item.PizzaId != null && userCart != null)
+            {
+                var pizza = await _context.Pizzas.Where(z => z.Id.Equals(item.PizzaId)).FirstOrDefaultAsync();
+                if (pizza != null)
+                {
+                    PizzaInCart itemToAdd = new PizzaInCart
+                    {
+                        Pizza = pizza,
+                        PizzaId = pizza.Id,
+                        Cart = userCart,
+                        CartId = userCart.Id,
+                        Quantity = item.Quantity
+                    };
+                    _context.Add(itemToAdd);
+                    await _context.SaveChangesAsync();
+                }
+                return RedirectToAction("Index", "Pizzas");
+            }
+            return View(item);
         }
 
         // GET: Pizzas/Details/5
