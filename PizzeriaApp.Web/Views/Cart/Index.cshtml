@@ -1,0 +1,37 @@
+﻿@model PizzeriaApp.Web.Models.DTO.CartDto
+
+<h1>Cart</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col" class="text-right">#</th>
+            <th scope="col">Pizza</th>
+            <th scope="col" class="text-right">Price</th>
+            <th scope="col" class="text-right">Quantity</th>
+            <th scope="col" class="text-right">Sum</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.PizzasInCart.Count; i++)
+        {
+            var item = Model.PizzasInCart[i];
+            <tr>
+                <th scope="row" class="text-right">@(i + 1)</th>
+                <td>@item.Pizza.PizzaName</td>
+                <td class="text-right">$@item.Pizza.PizzaPrice</td>
+                <td class="text-right">@item.Quantity</td>
+                <td class="text-right">$@(item.Pizza.PizzaPrice * item.Quantity)</td>
+                <td class="text-center"><a asp-route-id="@item.PizzaId" asp-action="DeleteTicketFromCart" class="btn btn-danger">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+    <tfoot class="border-bottom">
+        <tr>
+            <td colspan="4"><strong>Total Price</strong></td>
+            <td class="text-right"><strong>$@Model.TotalPrice</strong></td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>
