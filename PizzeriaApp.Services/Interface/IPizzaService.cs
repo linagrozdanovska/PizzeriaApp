@@ -16,4 +16,3 @@ namespace PizzeriaApp.Services.Interface
         bool AddToCart(AddPizzaToCartDto item, string userID);
     }
 }
-}

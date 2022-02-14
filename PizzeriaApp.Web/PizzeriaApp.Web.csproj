@@ -19,6 +19,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PizzeriaApp.Domain\PizzeriaApp.Domain.csproj" />
+    <ProjectReference Include="..\PizzeriaApp.Repository\PizzeriaApp.Repository.csproj" />
+    <ProjectReference Include="..\PizzeriaApp.Services\PizzeriaApp.Services.csproj" />
   </ItemGroup>
 
 </Project>
