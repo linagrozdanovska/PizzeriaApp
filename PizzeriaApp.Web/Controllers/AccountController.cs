@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MovieTicketsPurchase.Domain.Identity;
-using PizzeriaApp.Domain;
-using PizzeriaApp.Web.Models.Identity;
-using System;
-using System.Collections.Generic;
+using PizzeriaApp.Domain.DomainModels;
+using PizzeriaApp.Domain.Identity;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;

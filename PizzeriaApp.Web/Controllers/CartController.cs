@@ -1,54 +1,78 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PizzeriaApp.Web.Data;
-using PizzeriaApp.Web.Models.DTO;
-using PizzeriaApp.Web.Models.Identity;
+﻿using Microsoft.AspNetCore.Mvc;
+using PizzeriaApp.Services.Interface;
+using Stripe;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace PizzeriaApp.Web.Controllers
 {
     public class CartController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        private readonly UserManager<AppUser> _userManager;
+        private readonly ICartService _cartService;
 
-        public CartController(ApplicationDbContext context, UserManager<AppUser> userManager)
+        public CartController(ICartService cartService)
         {
-            _context = context;
-            _userManager = userManager;
+            _cartService = cartService;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var loggedInUser = await _context.Users
-                .Where(z => z.Id == userId)
-                .Include(z => z.UserCart)
-                .Include(z => z.UserCart.PizzasInCart)
-                .Include("UserCart.PizzasInCart.Pizza")
-                .FirstOrDefaultAsync();
-            var userCart = loggedInUser.UserCart;
-            var pizzaPrice = userCart.PizzasInCart.Select(z => new { 
-                PizzaPrice = z.Pizza.PizzaPrice,
-                Quantity = z.Quantity
-            }).ToList();
-            var totalPrice = 0;
-            foreach (var item in pizzaPrice)
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return View(this._cartService.getCartInfo(userId));
+        }
+
+        public IActionResult DeletePizzaFromCart(Guid id)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = this._cartService.deletePizzaFromCart(userId, id);
+            if (result)
             {
-                totalPrice += item.PizzaPrice * item.Quantity;
+                return RedirectToAction("Index", "Cart");
             }
-            CartDto cartDtoItem = new CartDto
+            else
             {
-                PizzasInCart = userCart.PizzasInCart.ToList(),
-                TotalPrice = totalPrice
-            };
-            //var allPRoducts = userCart.PizzasInCart.Select(z => z.Pizza).ToList();
-            return View(cartDtoItem);
+                return RedirectToAction("Index", "Cart");
+            }
+        }
+
+        private Boolean OrderNow()
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = this._cartService.orderNow(userId);
+            return result;
+        }
+
+        public IActionResult PayOrder(string stripeEmail, string stripeToken)
+        {
+            var customerService = new CustomerService();
+            var chargeService = new ChargeService();
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var order = this._cartService.getCartInfo(userId);
+            var customer = customerService.Create(new CustomerCreateOptions
+            {
+                Email = stripeEmail,
+                Source = stripeToken
+            });
+            var charge = chargeService.Create(new ChargeCreateOptions
+            {
+                Amount = order.TotalPrice * 100,
+                Description = "PizzeriaApp Payment",
+                Currency = "usd",
+                Customer = customer.Id
+            });
+            if (charge.Status == "succeeded")
+            {
+                var result = this.OrderNow();
+                if (result)
+                {
+                    return RedirectToAction("Index", "Cart");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Cart");
+                }
+            }
+            return RedirectToAction("Index", "Cart");
         }
     }
 }

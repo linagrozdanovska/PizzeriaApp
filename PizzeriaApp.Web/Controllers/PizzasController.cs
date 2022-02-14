@@ -1,82 +1,59 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using PizzeriaApp.Web.Data;
-using PizzeriaApp.Domain;
-using PizzeriaApp.Web.Models.DTO;
+using PizzeriaApp.Domain.DomainModels;
+using PizzeriaApp.Domain.DTO;
+using PizzeriaApp.Services.Interface;
 
 namespace PizzeriaApp.Web.Controllers
 {
     public class PizzasController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IPizzaService _pizzaService;
 
-        public PizzasController(ApplicationDbContext context)
+        public PizzasController(IPizzaService pizzaService)
         {
-            _context = context;
+            _pizzaService = pizzaService;
         }
 
         // GET: Pizzas
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Pizzas.ToListAsync());
+            var allpizzas = this._pizzaService.GetAllPizzas();
+            return View(allpizzas);
         }
 
         // GET: Pizzas/AddPizzaToCart/5
-        public async Task<IActionResult> AddPizzaToCartAsync(Guid? id)
+        public IActionResult AddPizzaToCart(Guid? id)
         {
-            var pizza = await _context.Pizzas.Where(z => z.Id.Equals(id)).FirstOrDefaultAsync();
-            AddPizzaToCartDto model = new AddPizzaToCartDto
-            {
-                SelectedPizza = pizza,
-                PizzaId = pizza.Id,
-                Quantity = 1
-            };
+            var model = this._pizzaService.GetCartInfo(id);
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddPizzaToCart([Bind("PizzaId, Quantity")]AddPizzaToCartDto item)
+        public IActionResult AddPizzaToCart([Bind("PizzaId, Quantity")]AddPizzaToCartDto item)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var userCart = await _context.Carts.Where(z => z.OwnerId.Equals(userId)).FirstOrDefaultAsync();
-            if (item.PizzaId != null && userCart != null)
+            var result = this._pizzaService.AddToCart(item, userId);
+            if (result)
             {
-                var pizza = await _context.Pizzas.Where(z => z.Id.Equals(item.PizzaId)).FirstOrDefaultAsync();
-                if (pizza != null)
-                {
-                    PizzaInCart itemToAdd = new PizzaInCart
-                    {
-                        Pizza = pizza,
-                        PizzaId = pizza.Id,
-                        Cart = userCart,
-                        CartId = userCart.Id,
-                        Quantity = item.Quantity
-                    };
-                    _context.Add(itemToAdd);
-                    await _context.SaveChangesAsync();
-                }
                 return RedirectToAction("Index", "Pizzas");
             }
             return View(item);
         }
 
         // GET: Pizzas/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public IActionResult Details(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var pizza = await _context.Pizzas
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var pizza = this._pizzaService.GetDetailsForPizza(id);
+
             if (pizza == null)
             {
                 return NotFound();
@@ -96,27 +73,26 @@ namespace PizzeriaApp.Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PizzaName,PizzaIngredients,PizzaPrice,PizzaImage")] Pizza pizza)
+        public IActionResult Create([Bind("Id,PizzaName,PizzaIngredients,PizzaPrice,PizzaImage")] Pizza pizza)
         {
             if (ModelState.IsValid)
             {
-                pizza.Id = Guid.NewGuid();
-                _context.Add(pizza);
-                await _context.SaveChangesAsync();
+                this._pizzaService.CreateNewPizza(pizza);
                 return RedirectToAction(nameof(Index));
             }
             return View(pizza);
         }
 
         // GET: Pizzas/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public IActionResult Edit(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var pizza = await _context.Pizzas.FindAsync(id);
+            var pizza = this._pizzaService.GetDetailsForPizza(id);
+
             if (pizza == null)
             {
                 return NotFound();
@@ -129,7 +105,7 @@ namespace PizzeriaApp.Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,PizzaName,PizzaIngredients,PizzaPrice,PizzaImage")] Pizza pizza)
+        public IActionResult Edit(Guid id, [Bind("Id,PizzaName,PizzaIngredients,PizzaPrice,PizzaImage")] Pizza pizza)
         {
             if (id != pizza.Id)
             {
@@ -140,8 +116,7 @@ namespace PizzeriaApp.Web.Controllers
             {
                 try
                 {
-                    _context.Update(pizza);
-                    await _context.SaveChangesAsync();
+                    this._pizzaService.UpdeteExistingPizza(pizza);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -156,19 +131,20 @@ namespace PizzeriaApp.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
             return View(pizza);
         }
 
         // GET: Pizzas/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public IActionResult Delete(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var pizza = await _context.Pizzas
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var pizza = this._pizzaService.GetDetailsForPizza(id);
+
             if (pizza == null)
             {
                 return NotFound();
@@ -180,17 +156,15 @@ namespace PizzeriaApp.Web.Controllers
         // POST: Pizzas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public IActionResult DeleteConfirmed(Guid id)
         {
-            var pizza = await _context.Pizzas.FindAsync(id);
-            _context.Pizzas.Remove(pizza);
-            await _context.SaveChangesAsync();
+            this._pizzaService.DeletePizza(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool PizzaExists(Guid id)
         {
-            return _context.Pizzas.Any(e => e.Id == id);
+            return this._pizzaService.GetDetailsForPizza(id) != null;
         }
     }
 }
