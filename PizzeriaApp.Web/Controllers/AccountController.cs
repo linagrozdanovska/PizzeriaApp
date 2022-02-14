@@ -7,7 +7,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace MovieTicketsPurchase.Web.Controllers
+namespace PizzeriaApp.Web.Controllers
 {
     public class AccountController : Controller
     {
