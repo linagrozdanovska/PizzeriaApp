@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace PizzeriaApp.Web.Models.Domain
+namespace PizzeriaApp.Domain.DomainModels
 {
-    public class Pizza
+    public class Pizza : BaseEntity
     {
-        public Guid Id { get; set; }
         [Required]
         [Display(Name = "Pizza")]
         public string PizzaName { get; set; }
@@ -22,5 +18,6 @@ namespace PizzeriaApp.Web.Models.Domain
         [Display(Name = "Image")]
         public string PizzaImage { get; set; }
         public virtual ICollection<PizzaInCart> PizzasInCart { get; set; }
+        public virtual ICollection<PizzaInOrder> PizzasInOrder { get; set; }
     }
 }

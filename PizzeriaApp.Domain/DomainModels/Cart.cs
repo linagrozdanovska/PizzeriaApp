@@ -1,14 +1,10 @@
-﻿using PizzeriaApp.Web.Models.Identity;
-using System;
+﻿using PizzeriaApp.Domain.Identity;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace PizzeriaApp.Web.Models.Domain
+namespace PizzeriaApp.Domain.DomainModels
 {
-    public class Cart
+    public class Cart : BaseEntity
     {
-        public Guid Id { get; set; }
         public string OwnerId { get; set; }
         public AppUser Owner { get; set; }
         public virtual ICollection<PizzaInCart> PizzasInCart { get; set; }

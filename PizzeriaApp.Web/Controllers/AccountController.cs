@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MovieTicketsPurchase.Domain.Identity;
-using PizzeriaApp.Web.Models.Domain;
+using PizzeriaApp.Domain;
 using PizzeriaApp.Web.Models.Identity;
 using System;
 using System.Collections.Generic;

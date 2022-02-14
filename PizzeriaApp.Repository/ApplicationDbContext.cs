@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PizzeriaApp.Domain.DomainModels;
 using PizzeriaApp.Domain.Identity;
 
-namespace PizzeriaApp.Web.Data
+namespace PizzeriaApp.Repository
 {
     public class ApplicationDbContext : IdentityDbContext<AppUser>
     {
@@ -15,6 +15,9 @@ namespace PizzeriaApp.Web.Data
         public virtual DbSet<Pizza> Pizzas { get; set; }
         public virtual DbSet<Cart> Carts { get; set; }
         public virtual DbSet<PizzaInCart> PizzasInCart { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<PizzaInOrder> PizzasInOrder { get; set; }
+        public virtual DbSet<EmailMessage> EmailMessages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -28,8 +31,8 @@ namespace PizzeriaApp.Web.Data
                 .Property(z => z.Id)
                 .ValueGeneratedOnAdd();
 
-            builder.Entity<PizzaInCart>()
-                .HasKey(z => new { z.PizzaId, z.CartId });
+            // builder.Entity<PizzaInCart>()
+            //    .HasKey(z => new { z.PizzaId, z.CartId });
 
             builder.Entity<PizzaInCart>()
                 .HasOne(z => z.Pizza)
@@ -45,6 +48,16 @@ namespace PizzeriaApp.Web.Data
                 .HasOne<AppUser>(z => z.Owner)
                 .WithOne(z => z.UserCart)
                 .HasForeignKey<Cart>(z => z.OwnerId);
+
+            builder.Entity<PizzaInOrder>()
+                .HasOne(z => z.SelectedPizza)
+                .WithMany(z => z.PizzasInOrder)
+                .HasForeignKey(z => z.OrderId);
+
+            builder.Entity<PizzaInOrder>()
+                .HasOne(z => z.UserOrder)
+                .WithMany(z => z.PizzasInOrder)
+                .HasForeignKey(z => z.PizzaId);
         }
     }
 }

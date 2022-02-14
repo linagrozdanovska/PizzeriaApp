@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PizzeriaApp.Web.Data;
-using PizzeriaApp.Web.Models.Domain;
+using PizzeriaApp.Domain;
 using PizzeriaApp.Web.Models.DTO;
 
 namespace PizzeriaApp.Web.Controllers

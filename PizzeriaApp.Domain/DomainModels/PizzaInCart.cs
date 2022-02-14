@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace PizzeriaApp.Web.Models.Domain
+namespace PizzeriaApp.Domain.DomainModels
 {
-    public class PizzaInCart
+    public class PizzaInCart : BaseEntity
     {
         public Guid PizzaId { get; set; }
         public Pizza Pizza { get; set; }

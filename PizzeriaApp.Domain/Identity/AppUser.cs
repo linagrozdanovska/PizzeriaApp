@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using PizzeriaApp.Web.Models.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using PizzeriaApp.Domain.DomainModels;
 
-namespace PizzeriaApp.Web.Models.Identity
+namespace PizzeriaApp.Domain.Identity
 {
     public class AppUser : IdentityUser
     {

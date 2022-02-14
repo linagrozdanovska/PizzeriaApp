@@ -1,10 +1,7 @@
-﻿using PizzeriaApp.Web.Models.Domain;
+﻿using PizzeriaApp.Domain.DomainModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace PizzeriaApp.Web.Models.DTO
+namespace PizzeriaApp.Domain.DTO
 {
     public class AddPizzaToCartDto
     {

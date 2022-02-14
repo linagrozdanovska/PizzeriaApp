@@ -5,7 +5,18 @@ VisualStudioVersion = 16.0.31624.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PizzeriaApp", "PizzeriaApp", "{AFD31081-996D-4BB2-850F-E323474556CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzeriaApp.Web", "PizzeriaApp.Web\PizzeriaApp.Web.csproj", "{DC5FB5E5-E57D-4FFC-BC40-362056864ECA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PizzeriaApp.Web", "PizzeriaApp.Web\PizzeriaApp.Web.csproj", "{DC5FB5E5-E57D-4FFC-BC40-362056864ECA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{44FBCA29-A11B-4E7A-A541-0FB1B63BE35E} = {44FBCA29-A11B-4E7A-A541-0FB1B63BE35E}
+		{5EE05E7A-57AD-47DD-9DD9-D93A44D6B7F2} = {5EE05E7A-57AD-47DD-9DD9-D93A44D6B7F2}
+		{6D3073FD-9905-44C6-8D0C-19F47CE104B3} = {6D3073FD-9905-44C6-8D0C-19F47CE104B3}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PizzeriaApp.Domain", "PizzeriaApp.Domain\PizzeriaApp.Domain.csproj", "{44FBCA29-A11B-4E7A-A541-0FB1B63BE35E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PizzeriaApp.Repository", "PizzeriaApp.Repository\PizzeriaApp.Repository.csproj", "{6D3073FD-9905-44C6-8D0C-19F47CE104B3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PizzeriaApp.Services", "PizzeriaApp.Services\PizzeriaApp.Services.csproj", "{5EE05E7A-57AD-47DD-9DD9-D93A44D6B7F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,12 +28,27 @@ Global
 		{DC5FB5E5-E57D-4FFC-BC40-362056864ECA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC5FB5E5-E57D-4FFC-BC40-362056864ECA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC5FB5E5-E57D-4FFC-BC40-362056864ECA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44FBCA29-A11B-4E7A-A541-0FB1B63BE35E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44FBCA29-A11B-4E7A-A541-0FB1B63BE35E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44FBCA29-A11B-4E7A-A541-0FB1B63BE35E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44FBCA29-A11B-4E7A-A541-0FB1B63BE35E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D3073FD-9905-44C6-8D0C-19F47CE104B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D3073FD-9905-44C6-8D0C-19F47CE104B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D3073FD-9905-44C6-8D0C-19F47CE104B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D3073FD-9905-44C6-8D0C-19F47CE104B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EE05E7A-57AD-47DD-9DD9-D93A44D6B7F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EE05E7A-57AD-47DD-9DD9-D93A44D6B7F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EE05E7A-57AD-47DD-9DD9-D93A44D6B7F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EE05E7A-57AD-47DD-9DD9-D93A44D6B7F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{DC5FB5E5-E57D-4FFC-BC40-362056864ECA} = {AFD31081-996D-4BB2-850F-E323474556CF}
+		{44FBCA29-A11B-4E7A-A541-0FB1B63BE35E} = {AFD31081-996D-4BB2-850F-E323474556CF}
+		{6D3073FD-9905-44C6-8D0C-19F47CE104B3} = {AFD31081-996D-4BB2-850F-E323474556CF}
+		{5EE05E7A-57AD-47DD-9DD9-D93A44D6B7F2} = {AFD31081-996D-4BB2-850F-E323474556CF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BB1E946-E672-4758-9A27-54846C42B2E7}
