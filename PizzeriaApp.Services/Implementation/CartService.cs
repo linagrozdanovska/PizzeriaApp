@@ -45,9 +45,10 @@ namespace PizzeriaApp.Services.Implementation
             var loggedInUser = this._userRepository.Get(userId);
             var userCart = loggedInUser.UserCart;
             var allPizzas = userCart.PizzasInCart.ToList();
+
             var PizzaPrices = allPizzas.Select(z => new
             {
-                PizzaPrice = z.Pizza.PizzaPrice,
+                PizzaPrice = z.PizzaPrice,
                 Quantity = z.Quantity
             }).ToList();
             var totalPrice = 0;
@@ -89,7 +90,9 @@ namespace PizzeriaApp.Services.Implementation
                     SelectedPizza = z.Pizza,
                     OrderId = order.Id,
                     UserOrder = order,
-                    Quantity = z.Quantity
+                    Quantity = z.Quantity,
+                    PizzaPrice = z.PizzaPrice,
+                    PizzaSize = z.PizzaSize
                 }).ToList();
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.AppendLine("Your order has been placed.");
@@ -99,8 +102,8 @@ namespace PizzeriaApp.Services.Implementation
                 {
                     var item = result[i - 1];
                     totalQuantity += item.Quantity;
-                    totalPrice += item.Quantity * item.SelectedPizza.PizzaPrice;
-                    stringBuilder.AppendLine(i.ToString() + ". Pizza: " + item.SelectedPizza.PizzaName + ", Ingredients: " + item.SelectedPizza.PizzaIngredients + ", Quantity: " + item.Quantity + ", Price: $" + item.SelectedPizza.PizzaPrice);
+                    totalPrice += item.Quantity * item.PizzaPrice;
+                    stringBuilder.AppendLine(i.ToString() + ". Pizza: " + item.SelectedPizza.PizzaName + ", Ingredients: " + item.SelectedPizza.PizzaIngredients + ", Quantity: " + item.Quantity + ", Price: $" + item.PizzaPrice);
                 }
                 stringBuilder.AppendLine("Total Quantity: " + totalQuantity.ToString());
                 stringBuilder.AppendLine("Total Price: $" + totalPrice.ToString());

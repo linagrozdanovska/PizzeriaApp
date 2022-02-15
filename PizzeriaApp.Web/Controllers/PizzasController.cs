@@ -33,9 +33,19 @@ namespace PizzeriaApp.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddPizzaToCart([Bind("PizzaId, Quantity")]AddPizzaToCartDto item)
+        public IActionResult AddPizzaToCart([Bind("SelectedPizza, PizzaId, Quantity, PizzaSize, PizzaPrice")]AddPizzaToCartDto item)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var scale = 0;
+            if (item.PizzaSize.Equals("small"))
+            {
+                scale = -2;
+            }
+            else if (item.PizzaSize.Equals("large"))
+            {
+                scale = 2;
+            }
+            item.PizzaPrice += scale;
             var result = this._pizzaService.AddToCart(item, userId);
             if (result)
             {

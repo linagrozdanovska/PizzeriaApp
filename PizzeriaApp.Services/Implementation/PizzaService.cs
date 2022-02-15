@@ -75,7 +75,9 @@ namespace PizzeriaApp.Services.Implementation
                         PizzaId = Pizza.Id,
                         Cart = userCart,
                         CartId = userCart.Id,
-                        Quantity = item.Quantity
+                        Quantity = item.Quantity,
+                        PizzaPrice = item.PizzaPrice,
+                        PizzaSize = item.PizzaSize
                     };
                     this._PizzaInCartRepository.Insert(itemToAdd);
                     return true;

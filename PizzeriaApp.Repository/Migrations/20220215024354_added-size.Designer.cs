@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PizzeriaApp.Repository;
 
 namespace PizzeriaApp.Repository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220215024354_added-size")]
+    partial class addedsize
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -235,6 +237,9 @@ namespace PizzeriaApp.Repository.Migrations
                     b.Property<int>("PizzaPrice")
                         .HasColumnType("int");
 
+                    b.Property<string>("PizzaSize")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Pizzas");
@@ -251,12 +256,6 @@ namespace PizzeriaApp.Repository.Migrations
 
                     b.Property<Guid>("PizzaId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("PizzaPrice")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PizzaSize")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -281,12 +280,6 @@ namespace PizzeriaApp.Repository.Migrations
 
                     b.Property<Guid>("PizzaId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("PizzaPrice")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PizzaSize")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
