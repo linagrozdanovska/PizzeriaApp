@@ -19,7 +19,7 @@
 
                 <div class="form-group">
                     <label asp-for="@Model.Password" class="control-label"></label>
-                    <input asp-for="@Model.Password" class="form-control" />
+                    <input asp-for="@Model.Password" class="form-control"  type="password"/>
                     @Html.ValidationMessageFor(m => m.Password, null, new { @class = "text-danger" })
                 </div>
 
