@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PizzeriaApp.Services.Interface;
 using Stripe;
 using System;
@@ -6,6 +7,7 @@ using System.Security.Claims;
 
 namespace PizzeriaApp.Web.Controllers
 {
+    [Authorize(Roles = "StandardUser,Admin,Delivery")]
     public class CartController : Controller
     {
         private readonly ICartService _cartService;
@@ -51,8 +53,9 @@ namespace PizzeriaApp.Web.Controllers
             var customer = customerService.Create(new CustomerCreateOptions
             {
                 Email = stripeEmail,
-                Source = stripeToken
+                Source = stripeToken,
             });
+
             var charge = chargeService.Create(new ChargeCreateOptions
             {
                 Amount = order.TotalPrice * 100,

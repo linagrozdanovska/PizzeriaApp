@@ -1,0 +1,58 @@
+﻿@model List<PizzeriaApp.Domain.DomainModels.Order>
+
+<h1>Orders</h1>
+<div class="row mb-3">
+    <div class="col-12">
+        @*<a class="btn btn-outline-success" asp-controller="Order" asp-action="ExportAllOrders">Export Orders</a>*@
+    </div>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col" class="text-right col-1">#</th>
+            <th scope="col" class="text-right col">Status</th>
+            <th scope="col" class="text-right col-2">Quantity</th>
+            <th scope="col" class="col-4 pl-5">Ordered Pizzas</th>
+            <th scope="col" class="text-right col-2 pr-5">Total</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            var item = Model[i];
+        <tr>
+            <th scope="row" class="text-right">@(i + 1)</th>
+            <td>@item.Status</td>
+            <td class="text-right">
+                @{int totalPizzas = 0;}
+                @foreach (var p in item.PizzasInOrder)
+                {
+                    totalPizzas += p.Quantity;
+                }
+                @totalPizzas
+            </td>
+            <td class="pl-5">
+                @foreach (var p in item.PizzasInOrder)
+                {
+                    <p>
+                        @p.SelectedPizza.PizzaName<br />
+                    </p>
+                }
+            </td>
+            <td class="text-right pr-5">
+                @{int totalPrice = 0;}
+                @foreach (var p in item.PizzasInOrder)
+                {
+                    totalPrice += p.Quantity * p.PizzaPrice;
+                }
+                $@totalPrice
+            </td>
+            <td class="text-center"><a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Details</a></td>
+            <!--<td class="text-center"><a class="btn btn-outline-primary" asp-action="GenerateInvoice" asp-route-id="@item.Id">Generate Invoice</a></td>-->
+        </tr>
+        }
+    </tbody>
+</table>

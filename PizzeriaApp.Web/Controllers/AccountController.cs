@@ -47,7 +47,7 @@ namespace PizzeriaApp.Web.Controllers
                     var result = await userManager.CreateAsync(user, request.Password);
                     if (result.Succeeded)
                     {
-                        //await userManager.AddToRoleAsync(user, "StandardUser");
+                        await userManager.AddToRoleAsync(user, "StandardUser");
                         return RedirectToAction("Login");
                     }
                     else

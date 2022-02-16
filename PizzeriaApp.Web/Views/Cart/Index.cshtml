@@ -1,4 +1,7 @@
-﻿@model PizzeriaApp.Domain.DTO.CartDto
+﻿@using Microsoft.Extensions.Options
+@inject IOptions<PizzeriaApp.Domain.StripeSettings> Stripe
+
+@model PizzeriaApp.Domain.DTO.CartDto
 
 <h1>Cart</h1>
 
@@ -18,15 +21,15 @@
         @for (int i = 0; i < Model.PizzasInCart.Count; i++)
         {
             var item = Model.PizzasInCart[i];
-        <tr>
-            <th scope="row" class="text-right" style="width: 5rem;">@(i + 1)</th>
-            <td>@item.Pizza.PizzaName</td>
-            <td>@item.PizzaSize</td>
-            <td class="text-right">$@item.PizzaPrice</td>
-            <td class="text-right">@item.Quantity</td>
-            <td class="text-right">$@(item.PizzaPrice * item.Quantity)</td>
-            <td class="text-center"><a asp-route-id="@item.PizzaId" asp-action="DeletePizzaFromCart" class="btn btn-danger">Delete</a></td>
-        </tr>
+            <tr>
+                <th scope="row" class="text-right" style="width: 5rem;">@(i + 1)</th>
+                <td>@item.Pizza.PizzaName</td>
+                <td>@item.PizzaSize</td>
+                <td class="text-right">$@item.PizzaPrice</td>
+                <td class="text-right">@item.Quantity</td>
+                <td class="text-right">$@(item.PizzaPrice * item.Quantity)</td>
+                <td class="text-center"><a asp-route-id="@item.PizzaId" asp-action="DeletePizzaFromCart" class="btn btn-danger">Delete</a></td>
+            </tr>
         }
     </tbody>
     <tfoot class="border-bottom">
@@ -37,3 +40,23 @@
         </tr>
     </tfoot>
 </table>
+
+<div class="row mb-3">
+    <div class="col-12">
+        @if (Model.TotalPrice != 0)
+        {
+            <form asp-controller="Cart" asp-action="PayOrder" method="post">
+                <article>
+                    <script src="https://checkout.stripe.com/checkout.js"
+                            class="stripe-button"
+                            data-key="@Stripe.Value.PublishableKey"
+                            data-locale="auto"
+                            data-description="PizzaApp Payment"
+                            data-amount="@(Model.TotalPrice * 100)"
+                            data-label="Checkout">
+                    </script>
+                </article>
+            </form>
+        }
+    </div>
+</div>

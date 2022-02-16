@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PizzeriaApp.Domain.DomainModels;
@@ -31,6 +32,7 @@ namespace PizzeriaApp.Web.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "StandardUser,Admin,Delivery")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult AddPizzaToCart([Bind("SelectedPizza, PizzaId, Quantity, PizzaSize, PizzaPrice")]AddPizzaToCartDto item)
@@ -73,6 +75,7 @@ namespace PizzeriaApp.Web.Controllers
         }
 
         // GET: Pizzas/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -83,6 +86,7 @@ namespace PizzeriaApp.Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create([Bind("Id,PizzaName,PizzaIngredients,PizzaPrice,PizzaImage")] Pizza pizza)
         {
             if (ModelState.IsValid)
@@ -94,6 +98,7 @@ namespace PizzeriaApp.Web.Controllers
         }
 
         // GET: Pizzas/Edit/5
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(Guid? id)
         {
             if (id == null)
@@ -115,6 +120,7 @@ namespace PizzeriaApp.Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(Guid id, [Bind("Id,PizzaName,PizzaIngredients,PizzaPrice,PizzaImage")] Pizza pizza)
         {
             if (id != pizza.Id)
@@ -146,6 +152,7 @@ namespace PizzeriaApp.Web.Controllers
         }
 
         // GET: Pizzas/Delete/5
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(Guid? id)
         {
             if (id == null)
@@ -166,6 +173,7 @@ namespace PizzeriaApp.Web.Controllers
         // POST: Pizzas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteConfirmed(Guid id)
         {
             this._pizzaService.DeletePizza(id);

@@ -79,7 +79,7 @@ namespace PizzeriaApp.Services.Implementation
                     Id = Guid.NewGuid(),
                     UserId = userId,
                     User = loggedInUser,
-                    Status = "placed"
+                    Status = "Order Placed"
                 };
                 this._orderRepository.Insert(order);
                 List<PizzaInOrder> PizzasInOrder = new List<PizzaInOrder>();
@@ -103,7 +103,7 @@ namespace PizzeriaApp.Services.Implementation
                     var item = result[i - 1];
                     totalQuantity += item.Quantity;
                     totalPrice += item.Quantity * item.PizzaPrice;
-                    stringBuilder.AppendLine(i.ToString() + ". Pizza: " + item.SelectedPizza.PizzaName + ", Ingredients: " + item.SelectedPizza.PizzaIngredients + ", Quantity: " + item.Quantity + ", Price: $" + item.PizzaPrice);
+                    stringBuilder.AppendLine(i.ToString() + ". Pizza: " + item.SelectedPizza.PizzaName + ", Ingredients: " + item.SelectedPizza.PizzaIngredients + ", Size: " + item.PizzaSize + ", Quantity: " + item.Quantity + ", Price: $" + item.PizzaPrice);
                 }
                 stringBuilder.AppendLine("Total Quantity: " + totalQuantity.ToString());
                 stringBuilder.AppendLine("Total Price: $" + totalPrice.ToString());
