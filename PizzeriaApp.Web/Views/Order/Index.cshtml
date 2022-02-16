@@ -1,17 +1,26 @@
 ﻿@model List<PizzeriaApp.Domain.DomainModels.Order>
 
-<h1>Orders</h1>
-<div class="row mb-3">
-    <div class="col-12">
-        @*<a class="btn btn-outline-success" asp-controller="Order" asp-action="ExportAllOrders">Export Orders</a>*@
+<h1 class="mb-3">Orders</h1>
+@if(User.IsInRole("Admin") || User.IsInRole("Delivery"))
+{
+    <div class="row mb-3">
+        <div class="col-12">
+            <a class="btn btn-outline-success" asp-controller="Order" asp-action="ExportOrders">Export Orders</a>
+        </div>
     </div>
-</div>
+}
+
 
 <table class="table table-striped">
     <thead>
         <tr>
             <th scope="col" class="col-2">Date & Time</th>
             <th scope="col" class="col-2">Status</th>
+            @if (User.IsInRole("Admin"))
+            {
+                <th scope="col">User</th>
+                <th scope="col">Address</th>
+            }
             @if (User.IsInRole("Delivery"))
             {
                 <th scope="col" class="col-4">Address</th>
@@ -63,6 +72,11 @@
                     </form>
                 }
             </td>
+            @if (User.IsInRole("Admin"))
+            {
+                <td>@item.User</td>
+                <td>@item.Address</td>
+            }
             @if (User.IsInRole("Delivery"))
             {
                 <td>@item.Address</td>
@@ -83,8 +97,11 @@
                 }
                 $@totalPrice
             </td>
-            <td class="text-center"><a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Details</a></td>
-        </tr>
+            <td class="text-center">
+                <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Details</a>
+            </td>
+
+            </tr>
         }
     </tbody>
 </table>
