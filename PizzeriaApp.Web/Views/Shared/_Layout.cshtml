@@ -24,23 +24,29 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Pizzas" asp-action="Index">Menu</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Cart" asp-action="Index">Cart</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Order" asp-action="Index">Orders</a>
-                        </li>
 
-                        @{ if (User.IsInRole("Admin"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="Role" asp-action="Index">Roles</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="User" asp-action="Index">Import Users</a>
-                                </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Cart" asp-action="Index">Cart</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Order" asp-action="Index">Orders</a>
+                            </li>
+                        }
 
-                            }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Admin
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" asp-area="" asp-controller="Role" asp-action="Index">Assign Roles</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="Index">Import Users</a>
+                                </div>
+                            </li>
                         }
                     </ul>
                 </div>
@@ -60,9 +66,9 @@
                     &copy; 2022 - e-Pizzeria
                 </div>
                 <div class="col-2 d-inline-flex justify-content-between">
-                    <a href="https://www.facebook.com"><i class="fab fa-facebook"></i></a>
-                    <a href="https://www.instagram.com"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.twitter.com"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.facebook.com"><i class="fab fa-facebook" style="color: #6c757d"></i></a>
+                    <a href="https://www.instagram.com"><i class="fab fa-instagram" style="color: #6c757d"></i></a>
+                    <a href="https://www.twitter.com"><i class="fab fa-twitter" style="color: #6c757d"></i></a>
                 </div>
             </div>
         </div>

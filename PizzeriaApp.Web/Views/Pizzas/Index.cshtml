@@ -5,12 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Menu</h1>
+<h1 class="text-center mb-4">Menu</h1>
 
 @if (User.IsInRole("Admin"))
 {
-    <p>
-        <a asp-action="Create">Create New</a>
+    <p class="text-center">
+        <a asp-action="Create" class="btn btn-primary my-3">Add New Pizza</a>
     </p>
 }
 
@@ -40,7 +40,7 @@
                 <div class="card-body p-0 text-center">
                     <h4 class="card-title my-2">@item.PizzaName</h4>
                     <hr class="w-50" />
-                    <p class="mb-1 px-2">@item.PizzaIngredients</p>
+                    <p class="px-2">@item.PizzaIngredients</p>
                     <a asp-action="AddPizzaToCart" asp-route-id="@item.Id" class="btn btn-success btn-block text-white w-100">Order</a>
                 </div>
                 @if (User.IsInRole("Admin"))
