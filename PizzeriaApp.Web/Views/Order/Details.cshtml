@@ -1,40 +1,55 @@
 ﻿@model PizzeriaApp.Domain.DomainModels.Order
 
-<h1>Order Details</h1>
+<h1 class="mb-3">Order Details</h1>
+<div class="row mb-2">
+    <label class="col-2"><strong>Order ID </strong></label>
+    <span>@Model.Id</span>
+</div>
 <div class="row mb-2">
     <label class="col-2"><strong>User </strong></label>
     <span>@Model.User</span>
 </div>
 <div class="row mb-2">
-    <label class="col-2"><strong>Order ID </strong></label>
-    <span>@Model.Id</span>
+    <label class="col-2"><strong>Address </strong></label>
+    <span>@Model.Address</span>
+</div>
+<div class="row mb-2">
+    <label class="col-2"><strong>Date & Time </strong></label>
+    <span>@Model.DateTime</span>
 </div>
 
-<table class="table table-striped">
+
+<table class="table table-striped mt-2">
     <thead>
         <tr>
-            <th scope="col" class="text-right">#</th>
-            <th scope="col">Pizza</th>
-            <th scope="col" style="width: 40%">Ingredients</th>
+            <th scope="col" colspan="2">Pizza</th>
             <th scope="col">Size</th>
-            <th scope="col" class="text-right">Quantity</th>
             <th scope="col" class="text-right">Price</th>
+            <th scope="col" class="text-right">Quantity</th>
+            <th scope="col" class="text-right">Subtotal</th>
+            <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
         @for (int i = 0; i < Model.PizzasInOrder.Count; i++)
         {
             var item = Model.PizzasInOrder.ElementAt(i);
-        <tr>
-            <th scope="row" class="text-right">@(i + 1)</th>
-            <td>@item.SelectedPizza.PizzaName</td>
-            <td>@item.SelectedPizza.PizzaIngredients</td>
-            <td>@item.PizzaSize</td>
-            <td class="text-right">@item.Quantity</td>
-            <td class="text-right">$@item.PizzaPrice</td>
-        </tr>
+            <tr>
+            <tr>
+                <td><img src="@item.SelectedPizza.PizzaImage" style="width: 150px;" /></td>
+                <td>
+                    <h4>@item.SelectedPizza.PizzaName</h4>
+                    <p>@item.SelectedPizza.PizzaIngredients</p>
+                </td>
+                <td>@item.PizzaSize</td>
+                <td class="text-right">$@item.PizzaPrice</td>
+                <td class="text-right">@item.Quantity</td>
+                <td class="text-right">$@(item.PizzaPrice * item.Quantity)</td>
+                <td class="text-center"><a asp-route-id="@item.PizzaId" asp-action="DeletePizzaFromCart" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></a></td>
+            </tr>
+            </tr>
         }
-</tbody>
+    </tbody>
     <tfoot class="border-bottom">
         <tr>
             <td colspan="4"><strong>Total</strong></td>
@@ -58,7 +73,7 @@
     </tfoot>
 </table>
 
-<div class="row mt-5">
+<div class="row mt-4">
     <div class="col-12">
         <a asp-action="Index" class="btn btn-secondary">All orders</a>
     </div>
