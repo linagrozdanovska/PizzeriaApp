@@ -8,6 +8,7 @@ namespace PizzeriaApp.Repository.Interface
     {
         List<Order> GetAllOrders(string UserId);
         List<Order> GetAllOrders();
-        Order GetOrderDetails(string userId, Guid id);
+        Order GetOrderDetails(Guid id);
+        void UpdateOrderStatus(Guid id, string status);
     }
 }

@@ -10,12 +10,14 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th scope="col" class="text-right col-2">Date & Time</th>
-            <th scope="col" class="text-right col-2">Status</th>
-            <th scope="col" class="text-right col-2">Quantity</th>
-            <th scope="col" class="col-4 pl-5">Ordered Pizzas</th>
+            <th scope="col" class="col-2">Date & Time</th>
+            <th scope="col" class="col-2">Status</th>
+            @if (User.IsInRole("Delivery"))
+            {
+                <th scope="col" class="col-4">Address</th>
+            }
+            <th scope="col" class="col-4 pl-3">Ordered Pizzas</th>
             <th scope="col" class="text-right col-2 pr-5">Total</th>
-            <th scope="col"></th>
             <th scope="col"></th>
         </tr>
     </thead>
@@ -25,20 +27,51 @@
             var item = Model[i];
         <tr>
             <td>@item.DateTime</td>
-            <td>@item.Status</td>
-            <td class="text-right">
-                @{int totalPizzas = 0;}
-                @foreach (var p in item.PizzasInOrder)
+            <td>
+                @item.Status
+                @if (User.IsInRole("Delivery"))
                 {
-                    totalPizzas += p.Quantity;
+                    <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#statusModal">Change Status</button>
+                    <form asp-controller="Order" asp-action="ChangeStatus" asp-route-id="@item.Id" method="post">
+                        <div id="statusModal" class="modal" tabindex="-1" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Change Status</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label>Status:</label>
+                                            <select class="form-control" name="Status">
+                                                <option value="Order Placed">Order Placed</option>
+                                                <option value="Preparing">Preparing</option>
+                                                <option value="Delivering">Delivering</option>
+                                                <option value="Delivered">Delivered</option>
+                                            </select>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 }
-                @totalPizzas
             </td>
-            <td class="pl-5">
+            @if (User.IsInRole("Delivery"))
+            {
+                <td>@item.Address</td>
+            }
+            <td class="pl-3">
                 @foreach (var p in item.PizzasInOrder)
                 {
                     <p>
-                        @p.SelectedPizza.PizzaName<br />
+                        @p.Quantity x @p.SelectedPizza.PizzaName (@p.PizzaSize)<br />
                     </p>
                 }
             </td>
@@ -51,7 +84,6 @@
                 $@totalPrice
             </td>
             <td class="text-center"><a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Details</a></td>
-            <!--<td class="text-center"><a class="btn btn-outline-primary" asp-action="GenerateInvoice" asp-route-id="@item.Id">Generate Invoice</a></td>-->
         </tr>
         }
     </tbody>

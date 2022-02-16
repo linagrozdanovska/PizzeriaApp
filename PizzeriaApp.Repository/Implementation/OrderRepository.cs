@@ -38,14 +38,23 @@ namespace PizzeriaApp.Repository.Implementation
                 .ToListAsync().Result;
         }
 
-        public Order GetOrderDetails(string userId, Guid id)
+        public Order GetOrderDetails(Guid id)
         {
             return entities
-                .Where(z => z.UserId.Equals(userId))
+                .Where(z => z.Id == id)
                 .Include(z => z.PizzasInOrder)
                 .Include("PizzasInOrder.SelectedPizza")
                 .Include(z => z.User)
-                .SingleOrDefaultAsync(z => z.Id == id).Result;
+                .SingleOrDefaultAsync().Result;
+        }
+
+        public void UpdateOrderStatus(Guid id, string status)
+        {
+            Order order = entities
+                .Where(z => z.Id == id)
+                .SingleOrDefault();
+            order.Status = status;
+            context.SaveChanges();
         }
     }
 }

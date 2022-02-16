@@ -39,11 +39,11 @@ namespace PizzeriaApp.Web.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var scale = 0;
-            if (item.PizzaSize.Equals("small"))
+            if (item.PizzaSize.Equals("Small"))
             {
                 scale = -2;
             }
-            else if (item.PizzaSize.Equals("large"))
+            else if (item.PizzaSize.Equals("Large"))
             {
                 scale = 2;
             }

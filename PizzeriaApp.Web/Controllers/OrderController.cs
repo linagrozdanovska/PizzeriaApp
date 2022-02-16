@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PizzeriaApp.Domain.DomainModels;
 using PizzeriaApp.Services.Interface;
 using System;
 using System.Security.Claims;
@@ -31,8 +32,19 @@ namespace PizzeriaApp.Web.Controllers
 
         public IActionResult Details(Guid id)
         {
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return View(this._orderService.GetOrderDetails(userId, id));
+            return View(this._orderService.GetOrderDetails(id));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Delivery")]
+        public IActionResult ChangeStatus(Guid id, string Status)
+        {
+            if (ModelState.IsValid)
+            {
+                this._orderService.UpdeteOrderStatus(id, Status);
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }
