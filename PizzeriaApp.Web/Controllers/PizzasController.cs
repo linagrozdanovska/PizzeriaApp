@@ -51,7 +51,7 @@ namespace PizzeriaApp.Web.Controllers
             var result = this._pizzaService.AddToCart(item, userId);
             if (result)
             {
-                return RedirectToAction("Index", "Pizzas");
+                return RedirectToAction("Index", "Cart");
             }
             return View(item);
         }
