@@ -105,9 +105,9 @@ namespace PizzeriaApp.Services.Implementation
                     var item = result[i - 1];
                     totalQuantity += item.Quantity;
                     totalPrice += item.Quantity * item.PizzaPrice;
-                    stringBuilder.AppendLine(i.ToString() + ". Pizza: " + item.SelectedPizza.PizzaName + ", Ingredients: " + item.SelectedPizza.PizzaIngredients + ", Size: " + item.PizzaSize + ", Quantity: " + item.Quantity + ", Price: $" + item.PizzaPrice);
+                    stringBuilder.AppendLine("\n" + i.ToString() + ". " + item.Quantity + " x " + item.SelectedPizza.PizzaName + "(" + item.PizzaSize + ")" + ", Ingredients: " + item.SelectedPizza.PizzaIngredients + ", Price: $" + item.PizzaPrice);
                 }
-                stringBuilder.AppendLine("Total Quantity: " + totalQuantity.ToString());
+                stringBuilder.AppendLine("\nTotal Quantity: " + totalQuantity.ToString());
                 stringBuilder.AppendLine("Total Price: $" + totalPrice.ToString());
                 emailMessage.Content = stringBuilder.ToString();
                 PizzasInOrder.AddRange(result);

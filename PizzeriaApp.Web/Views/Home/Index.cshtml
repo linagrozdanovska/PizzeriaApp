@@ -2,7 +2,41 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@section Styles{ 
+    <style>
+        body {
+            background-color: #dc3545;
+        }
+
+        .footer {
+            color: white !important;
+        }
+
+        h1 {
+            color:white;
+            font-size: 5rem;
+        }
+
+        .container main {
+            height: 100%;
+        }
+
+        .navbar {
+            background-color: #dc3545 !important;
+        }
+
+        .nav-link, .navbar-brand {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-6 my-auto">
+        <h1 class="mb-5">ORDER THE BEST PIZZA.</h1>
+        <a asp-controller="Pizzas" asp-action="Index" class="btn btn-outline-light btn-lg">View Menu</a>
+    </div>
+    <div class="col-6 my-auto">
+        <img src="https://demo.w3layouts.com/demos_new/template_demo/30-03-2020/pizzapan-liberty-demo_Free/1781439321/web/assets/images/pizza-full.png" alt="Delicious pizza" />
+    </div>
 </div>

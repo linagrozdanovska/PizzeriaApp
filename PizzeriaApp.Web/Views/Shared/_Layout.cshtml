@@ -3,15 +3,15 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Pizzeria App</title>
+    <title>@ViewData["Title"] - e-Pizzeria</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
-<body>
+<body style="height: 100%;">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-danger border-bottom box-shadow mb-3 py-1">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light mb-3 py-1" style="background-color: white; box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.1);">
             <div class="container">
-                <a class="navbar-brand mr-5" asp-area="" asp-controller="Home" asp-action="Index">Pizzeria App</a>
+                <a class="navbar-brand mr-5" asp-area="" asp-controller="Home" asp-action="Index">e-Pizzeria</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -46,14 +46,14 @@
         </nav>
     </header>
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" class="py-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer text-muted" style="box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);">
         <div class="container">
-            &copy; 2021 - Pizzeria App
+            &copy; 2021 - e-Pizzeria
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
