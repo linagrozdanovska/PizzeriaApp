@@ -7,7 +7,6 @@
 
 <h1 class="text-center">Add New Pizza</h1>
 
-<hr />
 <div class="row">
     <div class="col-md-4 mx-auto">
         <form asp-action="Create">
@@ -32,7 +31,7 @@
                 <input asp-for="PizzaImage" class="form-control" />
                 <span asp-validation-for="PizzaImage" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group text-center">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
@@ -40,7 +39,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Back to Menu</a>
 </div>
 
 @section Scripts {
