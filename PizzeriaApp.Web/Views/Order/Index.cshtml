@@ -10,8 +10,8 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th scope="col" class="text-right col-1">#</th>
-            <th scope="col" class="text-right col">Status</th>
+            <th scope="col" class="text-right col-2">Date & Time</th>
+            <th scope="col" class="text-right col-2">Status</th>
             <th scope="col" class="text-right col-2">Quantity</th>
             <th scope="col" class="col-4 pl-5">Ordered Pizzas</th>
             <th scope="col" class="text-right col-2 pr-5">Total</th>
@@ -24,7 +24,7 @@
         {
             var item = Model[i];
         <tr>
-            <th scope="row" class="text-right">@(i + 1)</th>
+            <td>@item.DateTime</td>
             <td>@item.Status</td>
             <td class="text-right">
                 @{int totalPizzas = 0;}

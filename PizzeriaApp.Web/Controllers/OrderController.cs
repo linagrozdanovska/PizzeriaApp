@@ -18,8 +18,15 @@ namespace PizzeriaApp.Web.Controllers
 
         public IActionResult Index()
         {
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return View(this._orderService.GetAllOrders(userId));
+            if (User.IsInRole("Delivery") || User.IsInRole("Admin"))
+            {
+                return View(this._orderService.GetAllOrders());
+            }
+            else
+            {
+                string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                return View(this._orderService.GetAllOrders(userId));
+            }
         }
 
         public IActionResult Details(Guid id)

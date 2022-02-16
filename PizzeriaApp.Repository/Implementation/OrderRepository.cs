@@ -29,6 +29,15 @@ namespace PizzeriaApp.Repository.Implementation
                 .ToListAsync().Result;
         }
 
+        public List<Order> GetAllOrders()
+        {
+            return entities
+                .Include(z => z.PizzasInOrder)
+                .Include("PizzasInOrder.SelectedPizza")
+                .Include(z => z.User)
+                .ToListAsync().Result;
+        }
+
         public Order GetOrderDetails(string userId, Guid id)
         {
             return entities

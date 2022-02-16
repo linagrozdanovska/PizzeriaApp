@@ -22,6 +22,11 @@ namespace PizzeriaApp.Services.Implementation
             return this._orderRepository.GetAllOrders(userId);
         }
 
+        public List<Order> GetAllOrders()
+        {
+            return this._orderRepository.GetAllOrders();
+        }
+
         public Order GetOrderDetails(string userId, Guid id)
         {
             return this._orderRepository.GetOrderDetails(userId, id);

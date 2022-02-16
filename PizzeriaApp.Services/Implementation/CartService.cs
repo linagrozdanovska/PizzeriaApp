@@ -80,7 +80,8 @@ namespace PizzeriaApp.Services.Implementation
                     UserId = userId,
                     User = loggedInUser,
                     Status = "Order Placed",
-                    Address = deliveryAddress
+                    Address = deliveryAddress,
+                    DateTime = DateTime.Now
                 };
                 this._orderRepository.Insert(order);
                 List<PizzaInOrder> PizzasInOrder = new List<PizzaInOrder>();
