@@ -37,14 +37,14 @@ namespace PizzeriaApp.Web.Controllers
             }
         }
 
-        private Boolean OrderNow()
+        private Boolean OrderNow(string deliveryAddress)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var result = this._cartService.orderNow(userId);
+            var result = this._cartService.orderNow(userId, deliveryAddress);
             return result;
         }
 
-        public IActionResult PayOrder(string stripeEmail, string stripeToken)
+        public IActionResult PayOrder(string stripeEmail, string stripeToken, string deliveryAddress)
         {
             var customerService = new CustomerService();
             var chargeService = new ChargeService();
@@ -65,7 +65,7 @@ namespace PizzeriaApp.Web.Controllers
             });
             if (charge.Status == "succeeded")
             {
-                var result = this.OrderNow();
+                var result = this.OrderNow(deliveryAddress);
                 if (result)
                 {
                     return RedirectToAction("Index", "Cart");

@@ -64,7 +64,7 @@ namespace PizzeriaApp.Services.Implementation
             return cartDto;
         }
 
-        public bool orderNow(string userId)
+        public bool orderNow(string userId, string deliveryAddress)
         {
             if (!string.IsNullOrEmpty(userId))
             {
@@ -79,7 +79,8 @@ namespace PizzeriaApp.Services.Implementation
                     Id = Guid.NewGuid(),
                     UserId = userId,
                     User = loggedInUser,
-                    Status = "Order Placed"
+                    Status = "Order Placed",
+                    Address = deliveryAddress
                 };
                 this._orderRepository.Insert(order);
                 List<PizzaInOrder> PizzasInOrder = new List<PizzaInOrder>();

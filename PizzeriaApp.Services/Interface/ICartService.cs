@@ -7,6 +7,6 @@ namespace PizzeriaApp.Services.Interface
     {
         CartDto getCartInfo(string userId);
         bool deletePizzaFromCart(string userId, Guid id);
-        bool orderNow(string userId);
+        bool orderNow(string userId, string deliveryAddress);
     }
 }

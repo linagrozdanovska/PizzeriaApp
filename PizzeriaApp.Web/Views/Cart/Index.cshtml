@@ -41,22 +41,41 @@
     </tfoot>
 </table>
 
-<div class="row mb-3">
-    <div class="col-12">
-        @if (Model.TotalPrice != 0)
-        {
-            <form asp-controller="Cart" asp-action="PayOrder" method="post">
-                <article>
-                    <script src="https://checkout.stripe.com/checkout.js"
-                            class="stripe-button"
-                            data-key="@Stripe.Value.PublishableKey"
-                            data-locale="auto"
-                            data-description="PizzaApp Payment"
-                            data-amount="@(Model.TotalPrice * 100)"
-                            data-label="Checkout">
-                    </script>
-                </article>
-            </form>
-        }
+
+@if (Model.TotalPrice != 0)
+{
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#checkoutModal">Checkout</button>
+}
+
+<form asp-controller="Cart" asp-action="PayOrder" method="post">
+    <div id="checkoutModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Enter Delivery Address</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Delivery Address:</label>
+                        <input type="text" name="deliveryAddress" class="form-control" />
+                    </div>
+                    <div class="modal-footer">
+                        <article>
+                            <script src="https://checkout.stripe.com/checkout.js"
+                                    class="stripe-button"
+                                    data-key="@Stripe.Value.PublishableKey"
+                                    data-locale="auto"
+                                    data-description="Checkout"
+                                    data-amount="@(Model.TotalPrice * 100)"
+                                    data-label="Proceed to Payment">
+                            </script>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+</form>
