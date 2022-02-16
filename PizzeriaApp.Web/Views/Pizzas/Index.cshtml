@@ -7,9 +7,13 @@
 
 <h1>Menu</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if (User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+
 
 @section Styles {
     <style>
@@ -21,7 +25,7 @@
             height: 5em;
         }
     </style>
-} 
+}
 
 @for (int i = 0; i < Model.Count; i++)
 {
@@ -32,17 +36,20 @@
         }
         <div class="col-3">
             <div class="card">
-                <img class="card-img-top img-fluid" src="@item.PizzaImage" alt="Pizza Image"/>
+                <img class="card-img-top img-fluid" src="@item.PizzaImage" alt="Pizza Image" />
                 <div class="card-body p-0 text-center">
                     <h4 class="card-title my-2">@item.PizzaName</h4>
-                    <hr class="w-50"/>
+                    <hr class="w-50" />
                     <p class="mb-1 px-2">@item.PizzaIngredients</p>
                     <a asp-action="AddPizzaToCart" asp-route-id="@item.Id" class="btn btn-success btn-block text-white w-100">Order</a>
                 </div>
-                <div class="card-footer d-flex justify-content-around">
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-info" style="width: 6rem">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger" style="width: 6rem">Delete</a>
-                </div>
+                @if (User.IsInRole("Admin"))
+                {
+                    <div class="card-footer d-flex justify-content-around">
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-info" style="width: 6rem">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger" style="width: 6rem">Delete</a>
+                    </div>
+                }
             </div>
         </div>
         if (i % 4 == 3)
