@@ -5,35 +5,81 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Add Pizza to Cart</h1>
-
 <div class="row">
-    <div class="col-4">
+    <div class="col-6 mx-auto text-center">
         <form asp-action="AddPizzaToCart" method="post">
             <input type="hidden" asp-for="PizzaId" />
-            <div class="form-group">
-                <label asp-for="SelectedPizza.PizzaName" class="control-label"></label>
-                <input disabled asp-for="SelectedPizza.PizzaName" class="form-control" />
+
+            <img src="@Model.SelectedPizza.PizzaImage" class="w-75" />
+            <h3>@Model.SelectedPizza.PizzaName</h3>
+            <hr />
+
+            <div class="row text-left">
+                <div class="form-group">
+                    <input hidden asp-for="PizzaPrice" value="@Model.SelectedPizza.PizzaPrice" class="form-control" />
+                </div>
+                <div class="col-8 pr-4">
+                    <div class="form-group">
+                        <label asp-for="PizzaSize" class="control-label font-weight-bold">Size</label>
+                        <select asp-for="PizzaSize" class="form-control">
+                            <option value="Small">Small (6 slices / 10")</option>
+                            <option value="Medium" selected="selected">Medium (8 slices / 12")</option>
+                            <option value="Large">Large (10 slices / 14")</option>
+                        </select>
+                    </div>
+                    <label class="font-weight-bold my-auto">Ingredients</label>
+                    <p class="m-0">@Model.SelectedPizza.PizzaIngredients</p>
+                </div>
+
+
+                <div class="col-4 pl-4">
+                    <div class="form-group">
+                        <label asp-for="Quantity" class="control-label font-weight-bold"></label>
+                        <input asp-for="Quantity" class="form-control" id="quantity" />
+                        <span asp-validation-for="Quantity" class="text-danger"></span>
+                    </div>
+                    <h2 id="price"></h2>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="PizzaSize" class="control-label"></label>
-                <select asp-for="PizzaSize" class="form-control">
-                    <option value="Small">Small (6 slices / 10")</option>
-                    <option value="Medium">Medium (8 slices / 12")</option>
-                    <option value="Large">Large (10 slices / 14")</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <input hidden asp-for="PizzaPrice" value="@Model.SelectedPizza.PizzaPrice" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label asp-for="Quantity" class="control-label"></label>
-                <input asp-for="Quantity" class="form-control" />
-                <span asp-validation-for="Quantity" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+            <div class="form-group text-center mt-4">
                 <input type="submit" value="Add to Cart" class="btn btn-success" />
             </div>
         </form>
     </div>
 </div>
+
+@section Scripts{ 
+    <script>
+        $(document).ready(function () {
+            var model = '@Html.Raw(Json.Serialize(Model.SelectedPizza))'
+            var parseModel = JSON.parse(model)
+            console.log(parseModel)
+            var price = parseModel.pizzaPrice
+            var size = $('select').val()
+            var quantity = parseInt($('#quantity').val())
+            $("#quantity").change(function () {
+                var price = parseModel.pizzaPrice
+                var size = $('select').val()
+                if (size === 'Large') {
+                    price += 2
+                } else if (size === 'Small') {
+                    price -= 2
+                }
+                var quantity = parseInt($('#quantity').val())
+                $("#price").text('$' + price * quantity);
+            });
+            $("select").change(function () {
+                var price = parseModel.pizzaPrice
+                var size = $('select').val()
+                if (size === 'Large') {
+                    price += 2
+                } else if (size === 'Small') {
+                    price -= 2
+                }
+                var quantity = parseInt($('#quantity').val())
+                $("#price").text('$' + price * quantity);
+            });
+            $("#price").text('$' + price * quantity);
+        });
+    </script>
+}
